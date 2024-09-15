@@ -63,15 +63,15 @@ const Navbar = () => {
           </Link>
         </li>
         <li className="px-2 md:px-4">
-          <a href="#" className="text-gray-500 font-semibold hover:text-black">
+          <Link to="/about" className="text-gray-500 font-semibold hover:text-black">
             About
-          </a>
+          </Link>
         </li>
-        <li className="px-2 md:px-4">
+        {/* <li className="px-2 md:px-4">
           <a href="#" className="text-gray-500 font-semibold hover:text-black">
             Press
           </a>
-        </li>
+        </li> */}
         <li className="px-2 md:px-4">
           <a href="#" className="text-gray-500 font-semibold hover:text-black">
             Contact

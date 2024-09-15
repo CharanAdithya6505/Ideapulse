@@ -48,8 +48,8 @@ function Auth() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
-      <form className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg" onSubmit={handleSubmit}>
+    <div className="flex flex-col items-center min-h-screen p-4">
+      <form className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg mt-24" onSubmit={handleSubmit}>
         <h2 className="text-2xl font-bold mb-6 text-center">{isSignup ? 'Signup' : 'Login'}</h2>
         {isSignup && (
           <div className="mb-4">
