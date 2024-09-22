@@ -13,7 +13,6 @@ function App() {
         <main className="mt-8 min-h-screen">
           <Outlet />
         </main>
-        <Footer />
       </div>
     </Provider>
   );

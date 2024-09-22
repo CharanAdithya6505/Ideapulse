@@ -6,36 +6,42 @@ import { FaBars } from "react-icons/fa6";
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userProfile, setUserProfile] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the token exists in localStorage
     const token = localStorage.getItem("token");
+    const email = localStorage.getItem("emailPrefix");
     setIsLoggedIn(!!token);
+    if (email) {
+      const username = email.split('@')[0];
+      setUserProfile(username);
+    }
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      if (scrollPosition > 30) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(scrollPosition > 30);
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   const handleLogout = () => {
-    // Remove the token from localStorage on logout
     localStorage.removeItem("token");
+    localStorage.removeItem("email");
     setIsLoggedIn(false);
+    setUserProfile("");
     navigate("/auth");
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev);
   };
 
   return (
@@ -52,10 +58,53 @@ const Navbar = () => {
         IdeaPulse
       </a>
 
-      <div className="sm:block hidden">
+      <div className="sm:block hidden border border-gray-400">
         <Search />
       </div>
 
+      {/* Hamburger Icon for Mobile View */}
+      <div className="sm:hidden">
+        <button onClick={toggleMobileMenu} className="text-black">
+          <FaBars size={24} />
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="absolute top-16 left-0 right-0 bg-white shadow-md z-50 p-4">
+          <ul className="flex flex-col items-start">
+            <li className="py-2">
+              <Link to="/" className="text-gray-500 font-semibold hover:text-black">
+                Home
+              </Link>
+            </li>
+            <li className="py-2">
+              <Link to="/about" className="text-gray-500 font-semibold hover:text-black">
+                About
+              </Link>
+            </li>
+            {isLoggedIn ? (
+              <li className="py-2 flex items-center">
+                <span className="text-gray-500 font-semibold mr-4">Hello, {userProfile}</span>
+                <button
+                  onClick={handleLogout}
+                  className="text-gray-500 font-semibold hover:text-black"
+                >
+                  Logout
+                </button>
+              </li>
+            ) : (
+              <li className="py-2">
+                <Link to="/auth" className="text-gray-500 font-semibold hover:text-black">
+                  Login
+                </Link>
+              </li>
+            )}
+          </ul>
+        </div>
+      )}
+
+      {/* Desktop Menu */}
       <ul className="md:inline-flex items-center hidden">
         <li className="px-2 md:px-4">
           <Link to="/" className="text-gray-500 font-semibold hover:text-black">
@@ -67,24 +116,17 @@ const Navbar = () => {
             About
           </Link>
         </li>
-        {/* <li className="px-2 md:px-4">
-          <a href="#" className="text-gray-500 font-semibold hover:text-black">
-            Press
-          </a>
-        </li> */}
         <li className="px-2 md:px-4">
-          <a href="#" className="text-gray-500 font-semibold hover:text-black">
-            Contact
-          </a>
-        </li>
-        <li className="px-2 md:px-4 hidden md:block">
           {isLoggedIn ? (
-            <button
-              onClick={handleLogout}
-              className="text-gray-500 font-semibold hover:text-black"
-            >
-              Logout
-            </button>
+            <div className="flex items-center">
+              <span className="text-gray-500 font-semibold mr-4">Hello, {userProfile}</span>
+              <button
+                onClick={handleLogout}
+                className="text-gray-500 font-semibold hover:text-black"
+              >
+                Logout
+              </button>
+            </div>
           ) : (
             <Link
               to="/auth"
@@ -93,17 +135,6 @@ const Navbar = () => {
               Login
             </Link>
           )}
-        </li>
-      </ul>
-
-      <ul className="sm:hidden">
-        <li className="px-2 md:px-4">
-          <Link
-            to="/"
-            className="text-purple-600 font-semibold hover:text-purple-500"
-          >
-            <FaBars />
-          </Link>
         </li>
       </ul>
     </header>

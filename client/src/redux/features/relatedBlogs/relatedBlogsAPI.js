@@ -1,6 +1,5 @@
 import publicAxios from "../../../components/publicAxios";
 
-// blogs/?tags_like=AI
 export const getRelatedBlogs = async ({ tags, id }) => {
     const limit = 5;
     let queryString = tags.length > 0 

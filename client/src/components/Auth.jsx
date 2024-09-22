@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signup, login } from './api'; 
+import { signup, login, googleSignIn } from './api'; 
 
 function Auth() {
   const navigate = useNavigate();
@@ -26,6 +26,13 @@ function Auth() {
     });
   };
 
+  const storeEmailPrefix = (email) => {
+    if (email.includes('@gmail.com')) {
+      const emailPrefix = email.split('@')[0];
+      localStorage.setItem('emailPrefix', emailPrefix);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password } = formData;
@@ -40,10 +47,23 @@ function Auth() {
         navigate('/auth');
       } else {
         localStorage.setItem('token', response.token); 
+        storeEmailPrefix(email); // Store the email prefix in localStorage
         navigate('/');
       }
     } catch (error) {
       alert(error.message || 'Something went wrong');
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const response = await googleSignIn();
+      alert('Google Sign-In successful!');
+      localStorage.setItem('token', response.token);
+      storeEmailPrefix(response.email); // Store the Google account email prefix in localStorage
+      navigate('/');
+    } catch (error) {
+      alert(error.message || 'Google Sign-In failed');
     }
   };
 
@@ -95,6 +115,15 @@ function Auth() {
           className="w-full mt-4 px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
         >
           {isSignup ? 'Already have an account? Login' : 'Don\'t have an account? Signup'}
+        </button>
+
+        {/* Google Sign-In Button */}
+        <button
+          type="button"
+          onClick={handleGoogleSignIn}
+          className="w-full mt-4 px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+        >
+          Sign in with Google
         </button>
       </form>
     </div>

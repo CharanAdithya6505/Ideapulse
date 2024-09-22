@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const RelatedBlogCard = ({blog}) => {
-//    console.log(blog)
 const {title,image, content, author, authorPic, category } = blog || {};
   return (
     <div className="p-4 md:w-1/3">

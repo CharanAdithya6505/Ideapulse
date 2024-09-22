@@ -25,7 +25,6 @@ const PopularBlog = ({currentVideoId, tags}) => {
           {
             relatedBlogs.length > 0 ? relatedBlogs.slice(0, 3).map((blog, index) => <RelatedBlogCard blog={blog} key={index}/>) : <div>No related blog found</div>
           }
-          {/* Repeat the structure for other blog entries */}
         </div>
       </div>
     </section>

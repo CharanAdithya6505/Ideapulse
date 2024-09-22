@@ -26,7 +26,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/blogs/:id",
-        element: <ProtectedRoute element={<SingleBlog />} />, // Wrap SingleBlog with ProtectedRoute
+        element: <ProtectedRoute element={<SingleBlog />} />,
       },
       {
         path: "/auth",

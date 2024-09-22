@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchBlogs } from '../../redux/features/blogs/blogsSlice';
-import Card from './Card';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBlogs } from "../../redux/features/blogs/blogsSlice";
+import Card from "./Card";
 
 const PostCards = () => {
   const dispatch = useDispatch();
-  const { blogs, isLoading, isError, error } = useSelector((state) => state.blogs);
+  const { blogs, isLoading, isError, error } = useSelector(
+    (state) => state.blogs
+  );
 
   const { tags, search } = useSelector((state) => state.filter);
 
@@ -14,11 +16,12 @@ const PostCards = () => {
 
   useEffect(() => {
     dispatch(fetchBlogs({ tags, search }));
-  }, [dispatch,tags, search]);
+  }, [dispatch, tags, search]);
 
-
-
-  const paginatedBlogs = blogs.slice((currentPage - 1) * blogsPerPage, currentPage * blogsPerPage);
+  const paginatedBlogs = blogs.slice(
+    (currentPage - 1) * blogsPerPage,
+    currentPage * blogsPerPage
+  );
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -32,12 +35,21 @@ const PostCards = () => {
           {paginatedBlogs.map((blog, index) => (
             <Card key={index} blog={blog} />
           ))}
-          <div className="pagination space-x-2">
-            <button className='px-2 bg-red-500 text-white rounded' onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+          <div className="pagination space-x-2 flex justify-end items-center gap-3">
+            <button
+              className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition duration-200"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
               Previous
             </button>
-            <span>{currentPage}</span>
-            <button onClick={() => handlePageChange(currentPage + 1)} className='px-2 bg-indigo-500 text-white rounded'>Next</button>
+            <span className="mx-2 text-lg font-semibold">{currentPage}</span>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+            >
+              Next
+            </button>
           </div>
         </div>
       ) : (

@@ -5,24 +5,14 @@ import PopularBlog from "./PopularBlog";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchBlog } from "../../redux/features/singleBlog/blogSlice";
+import db from "../../redux/features/blogs/db.json"
 
 const SingleBlog = () => {
   const { id } = useParams();
-  // console.log(id)
+  let blog = (db.blogs.find((blog)=>blog.id == id));
+  console.log(blog, "blog");
 
-  const { blog, isLoading, isError, error } = useSelector(
-    (state) => state.blog
-);
-
-const dispatch = useDispatch();
-useEffect(() => {
-  dispatch(fetchBlog(id));
-  window.scrollTo(0, 0);
-}, [dispatch, id]);
-
-console.log(blog)
-
-const {title,image, content, author, authorPic, category } = blog || {};
+  const { title, image, content, author, authorPic, category, matter } = blog || {};
 
   return (
     <article className="mt-8">
@@ -49,9 +39,9 @@ const {title,image, content, author, authorPic, category } = blog || {};
 
       <div className="flex flex-col lg:flex-row lg:space-x-12">
         <div className="px-4 lg:px-0 mt-8 text-gray-700 text-lg leading-relaxed w-full lg:w-3/4">
-          {content}
+          {matter}
           <br /> <br />
-          <p>
+          {/* <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo
             blanditiis tempora perferendis optio eveniet a fuga cum ipsam,
             aperiam vitae quasi nisi corporis adipisci molestiae facere qui,
@@ -75,57 +65,21 @@ const {title,image, content, author, authorPic, category } = blog || {};
             molestias dicta nisi autem consequatur beatae tenetur laudantium
             eveniet quas consequuntur, repudiandae incidunt atque amet assumenda
             aut. Quae magnam tempore optio temporibus!
-          </p>
-        </div>
-
-        <div className="w-full lg:w-1/4 m-auto mt-12 max-w-screen-sm">
-          <div className="p-4 border-t border-b md:border md:rounded">
-            <div className="flex py-2">
-              <img
-                src={authorPic}
-                className="h-10 w-10 rounded-full mr-2 object-cover"
-                alt="Author"
-              />
-              <div>
-                <p className="font-semibold text-gray-700 text-sm">
-                 {author}
-                </p>
-                <p className="font-semibold text-gray-600 text-xs"> Editor </p>
-              </div>
-            </div>
-            <p className="text-gray-700 py-3">
-              Mike writes about technology Yourself required no at thoughts
-              delicate landlord it be. Branched dashwood do is whatever it.
-            </p>
-            <button className="px-2 py-1 text-gray-100 bg-green-700 flex w-full items-center justify-center rounded">
-              Follow
-              <AiOutlineHeart className="ml-2" />
-            </button>
-          </div>
+          </p> */}
         </div>
       </div>
 
       <div className="flex items-center justify-between mt-4 md:w-2/3">
-        <div className="flex items-center space-x-2">
-          <BiCommentDetail className="text-gray-600" />
-          <span className="text-gray-600">15 comments</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <AiOutlineHeart className="text-red-500" />
-          <span className="text-gray-600">120 likes</span>
-        </div>
-        <div className="flex items-center space-x-2 mt-8"> 
-        <a
-          href="/"
-          className="text-green-700 inline-flex items-center justify-center"
-        >
-          Back to Blogs
-          <AiOutlineArrowRight className="ml-2" />
-        </a>
+        <div className="flex items-center space-x-2 mt-8">
+          <a
+            href="/"
+            className="text-green-700 inline-flex items-center justify-center"
+          >
+            Back to Blogs
+            <AiOutlineArrowRight className="ml-2" />
+          </a>
         </div>
       </div>
-
-      <PopularBlog currentVideoId={id} tags={category} />
     </article>
   );
 };
