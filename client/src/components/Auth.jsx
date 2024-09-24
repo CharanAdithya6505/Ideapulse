@@ -45,10 +45,12 @@ function Auth() {
       if (isSignup) {
         setIsSignup(false);
         navigate('/auth');
+        window.location.reload();
       } else {
         localStorage.setItem('token', response.token); 
         storeEmailPrefix(email); // Store the email prefix in localStorage
         navigate('/');
+        window.location.reload();
       }
     } catch (error) {
       alert(error.message || 'Something went wrong');
@@ -62,6 +64,7 @@ function Auth() {
       localStorage.setItem('token', response.token);
       storeEmailPrefix(response.email); // Store the Google account email prefix in localStorage
       navigate('/');
+      window.location.reload(); 
     } catch (error) {
       alert(error.message || 'Google Sign-In failed');
     }
